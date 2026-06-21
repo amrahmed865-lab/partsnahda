@@ -187,6 +187,10 @@ onSnapshot(
    snapshot.forEach(partDoc=>{
 
      const p = partDoc.data();
+    const remindersCount =
+(p.reminders || []).filter(
+ r => !r.completed
+).length;
      const id = partDoc.id;
 
      let badgeClass="out";
@@ -224,6 +228,9 @@ onSnapshot(
        <span class="badge ${badgeClass}">
          ${statusText}
        </span>
+       <p>
+⏰ ${remindersCount} تذكير
+</p>
 
       <div style="margin-top:10px">
 
