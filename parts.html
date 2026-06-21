@@ -124,6 +124,35 @@ top:0;
 background:#f8f9fa;
 padding:10px 0;
 }
+  .part{
+background:#fff;
+padding:15px;
+border-radius:14px;
+margin-bottom:12px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+border-left:4px solid #0078d4;
+transition:.2s;
+}
+
+.part:hover{
+transform:translateY(-2px);
+box-shadow:0 4px 16px rgba(0,0,0,.12);
+}
+
+.part h3{
+margin:0 0 10px;
+font-size:18px;
+}
+
+.part p{
+margin:5px 0;
+color:#555;
+}
+
+.badge{
+display:inline-block;
+margin-top:8px;
+}
 </style>
 
 </head>
@@ -180,7 +209,16 @@ padding:10px 0;
 </button>
 
 </div>
-
+<input
+id="searchInput"
+placeholder="🔍 ابحث عن قطعة..."
+style="
+width:100%;
+padding:12px;
+border-radius:10px;
+border:1px solid #ddd;
+margin-bottom:15px;
+">
 <div class="board">
 
 <div class="column">
