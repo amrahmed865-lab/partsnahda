@@ -75,6 +75,20 @@ window.addReminder = async(id)=>{
 
  
 
+ window.nextStatus = async (id,status)=>{
+
+ const ref = doc(db,"parts",id);
+
+ if(status==="out"){
+
+   await updateDoc(ref,{
+     status:"returned",
+     returnedBy:currentUser.email,
+     returnedAt:serverTimestamp()
+   });
+
+ }
+
  else if(status==="returned"){
 
    await updateDoc(ref,{
@@ -84,6 +98,24 @@ window.addReminder = async(id)=>{
    });
 
  }
+
+};
+
+window.addReminder = async(id)=>{
+
+ const title = prompt("عنوان التذكير");
+
+ if(!title) return;
+
+ const value = prompt("بعد كام؟");
+
+ if(!value) return;
+
+ const unit = prompt("minutes / hours / days");
+
+ if(!unit) return;
+
+ alert(`تم إنشاء التذكير: ${title}`);
 
 };
 
