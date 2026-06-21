@@ -1,10 +1,10 @@
-import { db, auth } from "./firebase.js";
-
 import {
 collection,
 addDoc,
 serverTimestamp,
-onSnapshot
+onSnapshot,
+doc,
+updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -28,6 +28,31 @@ const partsContainer =
 document.getElementById("partsContainer");
 
 let currentUser=null;
+window.nextStatus = async (id,status)=>{
+
+ const ref = doc(db,"parts",id);
+
+ if(status==="out"){
+
+   await updateDoc(ref,{
+     status:"returned",
+     returnedBy:currentUser.email,
+     returnedAt:serverTimestamp()
+   });
+
+ }
+
+ else if(status==="returned"){
+
+   await updateDoc(ref,{
+     status:"installed",
+     installedBy:currentUser.email,
+     installedAt:serverTimestamp()
+   });
+
+ }
+
+};
 
 onAuthStateChanged(auth,user=>{
 
@@ -88,39 +113,53 @@ onSnapshot(
  collection(db,"parts"),
  snapshot=>{
 
-   partsContainer.innerHTML="";
+let badgeClass="out";
+let statusText="خارج للصيانة";
 
-   let out=0;
-   let returned=0;
-   let installed=0;
+if(p.status==="returned"){
+ badgeClass="returned";
+ statusText="عادت من المركز";
+}
 
-   snapshot.forEach(doc=>{
+if(p.status==="installed"){
+ badgeClass="installed";
+ statusText="تم تركيبها";
+}
 
-     const p=doc.data();
+partsContainer.innerHTML += `
+<div class="part">
 
-     if(p.status==="out") out++;
-     if(p.status==="returned") returned++;
-     if(p.status==="installed") installed++;
+<h3>${p.partName}</h3>
 
-     partsContainer.innerHTML += `
-      <div class="part">
+<p>🏭 ${p.manufacturer||"-"}</p>
 
-       <h3>${p.partName}</h3>
+<p>🖨 ${p.machine||"-"}</p>
 
-       <p>🏭 ${p.manufacturer||"-"}</p>
+<p>🔧 ${p.repairCenter||"-"}</p>
 
-       <p>🖨 ${p.machine||"-"}</p>
+<p>🏷 ${p.repairSerial||"-"}</p>
 
-       <p>🔧 ${p.repairCenter||"-"}</p>
+<span class="badge ${badgeClass}">
+${statusText}
+</span>
 
-       <p>🏷 ${p.repairSerial||"-"}</p>
+<div style="margin-top:10px">
 
-       <span class="badge out">
-        خارج للصيانة
-       </span>
+<button
+onclick="nextStatus('${doc.id}','${p.status}')">
 
-      </div>
-     `;
+${p.status==="out"
+?"عادت من المركز"
+:p.status==="returned"
+?"تم تركيبها"
+:"مكتملة"}
+
+</button>
+
+</div>
+
+</div>
+`;
 
    });
 
