@@ -40,6 +40,25 @@ window.nextStatus = async (id,status)=>{
      returnedBy:currentUser.email,
      returnedAt:serverTimestamp()
    });
+  window.addReminder = async(id)=>{
+
+ const title = prompt("عنوان التذكير");
+
+ if(!title) return;
+
+ const value = prompt("بعد كام؟");
+
+ if(!value) return;
+
+ const unit = prompt("minutes / hours / days");
+
+ if(!unit) return;
+
+ alert(
+   `تم إنشاء التذكير\n${title}`
+ );
+
+};
 
  }
 
@@ -92,9 +111,11 @@ saveBtn.onclick = async()=>{
 
     status:"out",
 
-    createdBy:currentUser.email,
+reminders:[],
 
-    createdAt:serverTimestamp()
+createdBy:currentUser.email,
+
+createdAt:serverTimestamp()
 
    }
  );
@@ -167,6 +188,9 @@ onSnapshot(
          p.status !== "installed"
          ?
          `<button onclick="nextStatus('${id}','${p.status}')">
+         <button onclick="addReminder('${id}')">
+⏰ تذكير
+</button>
             ${
               p.status==="out"
               ? "عادت من المركز"
