@@ -68,7 +68,12 @@ window.addReminder = async(id)=>{
 };
 
 document.getElementById("closeReminderBtn").onclick = ()=>{
- document.getElementById("saveReminderBtn").onclick = async ()=>{
+
+ document.getElementById("reminderModal").style.display = "none";
+
+};
+
+document.getElementById("saveReminderBtn").onclick = async ()=>{
 
  const title =
  document.getElementById("reminderTitle").value;
@@ -101,39 +106,12 @@ document.getElementById("closeReminderBtn").onclick = ()=>{
    })
  });
 
- document.getElementById("reminderModal").style.display="none";
+ document.getElementById("reminderModal").style.display = "none";
 
- document.getElementById("reminderTitle").value="";
- document.getElementById("reminderValue").value="";
+ document.getElementById("reminderTitle").value = "";
+ document.getElementById("reminderValue").value = "";
 
  alert("تم حفظ التذكير");
-
-};
- 
-
- window.nextStatus = async (id,status)=>{
-
- const ref = doc(db,"parts",id);
-
- if(status==="out"){
-
-   await updateDoc(ref,{
-     status:"returned",
-     returnedBy:currentUser.email,
-     returnedAt:serverTimestamp()
-   });
-
- }
-
- else if(status==="returned"){
-
-   await updateDoc(ref,{
-     status:"installed",
-     installedBy:currentUser.email,
-     installedAt:serverTimestamp()
-   });
-
- }
 
 };
 
