@@ -40,7 +40,22 @@ window.nextStatus = async (id,status)=>{
      returnedBy:currentUser.email,
      returnedAt:serverTimestamp()
    });
-  window.addReminder = async(id)=>{
+
+ }
+
+ else if(status==="returned"){
+
+   await updateDoc(ref,{
+     status:"installed",
+     installedBy:currentUser.email,
+     installedAt:serverTimestamp()
+   });
+
+ }
+
+};
+
+window.addReminder = async(id)=>{
 
  const title = prompt("عنوان التذكير");
 
@@ -54,9 +69,7 @@ window.nextStatus = async (id,status)=>{
 
  if(!unit) return;
 
- alert(
-   `تم إنشاء التذكير\n${title}`
- );
+ alert(`تم إنشاء التذكير: ${title}`);
 
 };
 
@@ -182,26 +195,27 @@ onSnapshot(
          ${statusText}
        </span>
 
-       <div style="margin-top:10px">
+      <div style="margin-top:10px">
 
-       ${
-         p.status !== "installed"
-         ?
-         `<button onclick="nextStatus('${id}','${p.status}')">
-         <button onclick="addReminder('${id}')">
+${
+ p.status !== "installed"
+ ?
+ `
+ <button onclick="nextStatus('${id}','${p.status}')">
+ ${p.status==="out"
+   ? "عادت من المركز"
+   : "تم تركيبها"}
+ </button>
+ `
+ :
+ `<button disabled>مكتملة</button>`
+}
+
+<button onclick="addReminder('${id}')">
 ⏰ تذكير
 </button>
-            ${
-              p.status==="out"
-              ? "عادت من المركز"
-              : "تم تركيبها"
-            }
-          </button>`
-         :
-         `<button disabled>مكتملة</button>`
-       }
 
-       </div>
+</div>
 
      </div>
      `;
