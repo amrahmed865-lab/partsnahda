@@ -55,21 +55,19 @@ window.nextStatus = async (id,status)=>{
 
 };
 
+window.selectedPartId = null;
+
 window.addReminder = async(id)=>{
 
- const title = prompt("عنوان التذكير");
+  window.selectedPartId = id;
 
- if(!title) return;
+  document.getElementById("reminderModal").style.display = "flex";
 
- const value = prompt("بعد كام؟");
+};
 
- if(!value) return;
+document.getElementById("closeReminderBtn").onclick = ()=>{
 
- const unit = prompt("minutes / hours / days");
-
- if(!unit) return;
-
- alert(`تم إنشاء التذكير: ${title}`);
+  document.getElementById("reminderModal").style.display = "none";
 
 };
 
@@ -101,23 +99,7 @@ window.addReminder = async(id)=>{
 
 };
 
-window.addReminder = async(id)=>{
 
- const title = prompt("عنوان التذكير");
-
- if(!title) return;
-
- const value = prompt("بعد كام؟");
-
- if(!value) return;
-
- const unit = prompt("minutes / hours / days");
-
- if(!unit) return;
-
- alert(`تم إنشاء التذكير: ${title}`);
-
-};
 
 onAuthStateChanged(auth,user=>{
 
