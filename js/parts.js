@@ -184,8 +184,9 @@ onSnapshot(
  collection(db,"parts"),
  snapshot=>{
 
-   partsContainer.innerHTML="";
-
+outContainer.innerHTML="";
+returnedContainer.innerHTML="";
+installedContainer.innerHTML="";
    let out=0;
    let returned=0;
    let installed=0;
@@ -218,40 +219,41 @@ onSnapshot(
        installed++;
      }
 
-     partsContainer.innerHTML += `
-     <div class="part">
+     const card = `
+<div class="part">
 
-       <h3>${p.partName}</h3>
+<h3>${p.partName}</h3>
 
-       <p>🏭 ${p.manufacturer || "-"}</p>
+<p>🏭 ${p.manufacturer || "-"}</p>
 
-       <p>🖨 ${p.machine || "-"}</p>
+<p>🖨 ${p.machine || "-"}</p>
 
-       <p>🔧 ${p.repairCenter || "-"}</p>
+<p>🔧 ${p.repairCenter || "-"}</p>
 
-       <p>🏷 ${p.repairSerial || "-"}</p>
+<p>🏷 ${p.repairSerial || "-"}</p>
 
-       <span class="badge ${badgeClass}">
-         ${statusText}
-       </span>
-       <p>
+<span class="badge ${badgeClass}">
+${statusText}
+</span>
+
+<p>
 ⏰ ${remindersCount} تذكير
 </p>
 
-      <div style="margin-top:10px">
+<div style="margin-top:10px">
 
 ${
- p.status !== "installed"
- ?
- `
- <button onclick="nextStatus('${id}','${p.status}')">
- ${p.status==="out"
-   ? "عادت من المركز"
-   : "تم تركيبها"}
- </button>
- `
- :
- `<button disabled>مكتملة</button>`
+p.status !== "installed"
+?
+`
+<button onclick="nextStatus('${id}','${p.status}')">
+${p.status==="out"
+? "عادت من المركز"
+: "تم تركيبها"}
+</button>
+`
+:
+`<button disabled>مكتملة</button>`
 }
 
 <button onclick="addReminder('${id}')">
@@ -260,8 +262,23 @@ ${
 
 </div>
 
-     </div>
-     `;
+</div>
+`;
+    if(p.status==="out"){
+
+ outContainer.innerHTML += card;
+
+}
+else if(p.status==="returned"){
+
+ returnedContainer.innerHTML += card;
+
+}
+else{
+
+ installedContainer.innerHTML += card;
+
+}
 
    });
 
