@@ -66,6 +66,27 @@ window.addReminder = async(id)=>{
 };
 
 document.getElementById("closeReminderBtn").onclick = ()=>{
+ document.getElementById("saveReminderBtn").onclick = ()=>{
+
+ const title =
+ document.getElementById("reminderTitle").value;
+
+ const value =
+ document.getElementById("reminderValue").value;
+
+ const unit =
+ document.getElementById("reminderUnit").value;
+
+ console.log({
+   partId: window.selectedPartId,
+   title,
+   value,
+   unit
+ });
+
+ alert("تم التقاط البيانات");
+
+};
 
   document.getElementById("reminderModal").style.display = "none";
 
