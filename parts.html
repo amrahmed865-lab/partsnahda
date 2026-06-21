@@ -103,6 +103,27 @@ margin-bottom:10px;
 border:1px solid #ddd;
 border-radius:8px;
 }
+  .board{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+margin-top:20px;
+}
+
+.column{
+background:#f8f9fa;
+padding:12px;
+border-radius:12px;
+min-height:500px;
+}
+
+.column h3{
+margin-top:0;
+position:sticky;
+top:0;
+background:#f8f9fa;
+padding:10px 0;
+}
 </style>
 
 </head>
@@ -160,14 +181,33 @@ border-radius:8px;
 
 </div>
 
+<div class="board">
+
+<div class="column">
+
 <h3>🔴 خارج للصيانة</h3>
+
 <div id="outContainer"></div>
 
+</div>
+
+<div class="column">
+
 <h3>🔵 عادت من المركز</h3>
+
 <div id="returnedContainer"></div>
 
+</div>
+
+<div class="column">
+
 <h3>🟢 تم التركيب</h3>
+
 <div id="installedContainer"></div>
+
+</div>
+
+</div>
 <div id="reminderModal">
 
 <div class="modal-box">
