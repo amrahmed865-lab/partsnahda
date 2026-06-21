@@ -1,15 +1,5 @@
 import { db, auth } from "./firebase.js";
-import {
-collection,
-addDoc,
-serverTimestamp,
-onSnapshot,
-doc,
-updateDoc
-}
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-import {
 import {
 collection,
 addDoc,
@@ -20,6 +10,9 @@ updateDoc,
 arrayUnion
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+import {
+onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
