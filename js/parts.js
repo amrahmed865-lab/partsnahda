@@ -1,3 +1,4 @@
+import { db, auth } from "./firebase.js";
 import {
 collection,
 addDoc,
@@ -113,59 +114,79 @@ onSnapshot(
  collection(db,"parts"),
  snapshot=>{
 
-let badgeClass="out";
-let statusText="خارج للصيانة";
+   partsContainer.innerHTML="";
 
-if(p.status==="returned"){
- badgeClass="returned";
- statusText="عادت من المركز";
-}
+   let out=0;
+   let returned=0;
+   let installed=0;
 
-if(p.status==="installed"){
- badgeClass="installed";
- statusText="تم تركيبها";
-}
+   snapshot.forEach(partDoc=>{
 
-partsContainer.innerHTML += `
-<div class="part">
+     const p = partDoc.data();
+     const id = partDoc.id;
 
-<h3>${p.partName}</h3>
+     let badgeClass="out";
+     let statusText="خارج للصيانة";
 
-<p>🏭 ${p.manufacturer||"-"}</p>
+     if(p.status==="out"){
+       out++;
+     }
 
-<p>🖨 ${p.machine||"-"}</p>
+     if(p.status==="returned"){
+       badgeClass="returned";
+       statusText="عادت من المركز";
+       returned++;
+     }
 
-<p>🔧 ${p.repairCenter||"-"}</p>
+     if(p.status==="installed"){
+       badgeClass="installed";
+       statusText="تم تركيبها";
+       installed++;
+     }
 
-<p>🏷 ${p.repairSerial||"-"}</p>
+     partsContainer.innerHTML += `
+     <div class="part">
 
-<span class="badge ${badgeClass}">
-${statusText}
-</span>
+       <h3>${p.partName}</h3>
 
-<div style="margin-top:10px">
+       <p>🏭 ${p.manufacturer || "-"}</p>
 
-<button
-onclick="nextStatus('${doc.id}','${p.status}')">
+       <p>🖨 ${p.machine || "-"}</p>
 
-${p.status==="out"
-?"عادت من المركز"
-:p.status==="returned"
-?"تم تركيبها"
-:"مكتملة"}
+       <p>🔧 ${p.repairCenter || "-"}</p>
 
-</button>
+       <p>🏷 ${p.repairSerial || "-"}</p>
 
-</div>
+       <span class="badge ${badgeClass}">
+         ${statusText}
+       </span>
 
-</div>
-`;
+       <div style="margin-top:10px">
+
+       ${
+         p.status !== "installed"
+         ?
+         `<button onclick="nextStatus('${id}','${p.status}')">
+            ${
+              p.status==="out"
+              ? "عادت من المركز"
+              : "تم تركيبها"
+            }
+          </button>`
+         :
+         `<button disabled>مكتملة</button>`
+       }
+
+       </div>
+
+     </div>
+     `;
 
    });
 
-   document.getElementById("outCount").innerText=out;
-   document.getElementById("returnedCount").innerText=returned;
-   document.getElementById("installedCount").innerText=installed;
-   document.getElementById("totalCount").innerText=snapshot.size;
+   document.getElementById("outCount").innerText = out;
+   document.getElementById("returnedCount").innerText = returned;
+   document.getElementById("installedCount").innerText = installed;
+   document.getElementById("totalCount").innerText = snapshot.size;
 
  });
