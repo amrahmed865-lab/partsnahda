@@ -27,8 +27,14 @@ const repairSerial = document.getElementById("repairSerial");
 const reason = document.getElementById("reason");
 const notes = document.getElementById("notes");
 
-const partsContainer =
-document.getElementById("partsContainer");
+const outContainer =
+document.getElementById("outContainer");
+
+const returnedContainer =
+document.getElementById("returnedContainer");
+
+const installedContainer =
+document.getElementById("installedContainer");
 
 let currentUser=null;
 window.nextStatus = async (id,status)=>{
