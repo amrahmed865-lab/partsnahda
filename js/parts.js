@@ -10,7 +10,16 @@ updateDoc
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 import {
-onAuthStateChanged
+import {
+collection,
+addDoc,
+serverTimestamp,
+onSnapshot,
+doc,
+updateDoc,
+arrayUnion
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
@@ -66,32 +75,47 @@ window.addReminder = async(id)=>{
 };
 
 document.getElementById("closeReminderBtn").onclick = ()=>{
- document.getElementById("saveReminderBtn").onclick = ()=>{
+ document.getElementById("saveReminderBtn").onclick = async ()=>{
 
  const title =
  document.getElementById("reminderTitle").value;
 
  const value =
- document.getElementById("reminderValue").value;
+ Number(document.getElementById("reminderValue").value);
 
  const unit =
  document.getElementById("reminderUnit").value;
 
- console.log({
-   partId: window.selectedPartId,
-   title,
-   value,
-   unit
+ if(!title || !value){
+   alert("أكمل البيانات");
+   return;
+ }
+
+ const ref = doc(
+   db,
+   "parts",
+   window.selectedPartId
+ );
+
+ await updateDoc(ref,{
+   reminders: arrayUnion({
+     title,
+     value,
+     unit,
+     completed:false,
+     createdBy:currentUser.email,
+     createdAt:new Date().toISOString()
+   })
  });
 
- alert("تم التقاط البيانات");
+ document.getElementById("reminderModal").style.display="none";
+
+ document.getElementById("reminderTitle").value="";
+ document.getElementById("reminderValue").value="";
+
+ alert("تم حفظ التذكير");
 
 };
-
-  document.getElementById("reminderModal").style.display = "none";
-
-};
-
  
 
  window.nextStatus = async (id,status)=>{
