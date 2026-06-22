@@ -381,7 +381,7 @@ const currentUser = localStorage.getItem("user");
 const role        = localStorage.getItem("role");
 const canEdit     = (currentUser === "ahmed" || currentUser === "amr");
 
-if (!currentUser) location.href = "index.html";
+//if (!currentUser) location.href = "index.html";
 if (!canEdit) document.getElementById("addSection").style.display = "none";
 
 function logout() { localStorage.clear(); location.href = "index.html"; }
